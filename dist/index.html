@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Head Tilt Vocabulary Game</title>
+    <meta name="description" content="Interactive vocabulary learning game for kids using head movements">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-CGB8I-GS.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CA5zx7xs.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <h1 class="game-title">🎮 Vocabulary Quest</h1>
+                <p class="game-subtitle">Learn English with Head Movements!</p>
+                <div class="mascot">🦊</div>
+                <button id="start-btn" class="btn btn-primary btn-large">
+                    <span>▶️</span> Start Game
+                </button>
+                <button id="manage-btn" class="btn btn-secondary">
+                    <span>⚙️</span> Manage Questions
+                </button>
+            </div>
+        </div>
+
+        <!-- Permission Screen -->
+        <div id="permission-screen" class="screen">
+            <div class="permission-content">
+                <div class="camera-icon">📷</div>
+                <h2>Camera Permission Needed</h2>
+                <p>This game uses your camera to detect head tilts.<br>No images are saved!</p>
+                <button id="allow-camera-btn" class="btn btn-primary btn-large">
+                    Allow Camera
+                </button>
+                <button id="back-to-welcome" class="btn btn-secondary">
+                    ← Back
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructions Screen -->
+        <div id="instructions-screen" class="screen">
+            <div class="instructions-content">
+                <h2>How to Play</h2>
+                <div class="instruction-cards">
+                    <div class="instruction-card">
+                        <div class="instruction-icon">⬅️</div>
+                        <p>Tilt head <strong>LEFT</strong> to choose left answer</p>
+                    </div>
+                    <div class="instruction-card">
+                        <div class="instruction-icon">➡️</div>
+                        <p>Tilt head <strong>RIGHT</strong> to choose right answer</p>
+                    </div>
+                </div>
+                <div class="camera-preview-container">
+                    <video id="preview-video" autoplay playsinline></video>
+                    <div id="tilt-indicator" class="tilt-indicator">Keep your head straight</div>
+                </div>
+                <button id="ready-btn" class="btn btn-primary btn-large">
+                    I'm Ready! 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="score-display">
+                    <span class="score-label">Score:</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="progress-display">
+                    <span id="current-question">1</span> / <span id="total-questions">10</span>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <h2 id="question-text" class="question-text">Loading question...</h2>
+            </div>
+
+            <div class="answers-container">
+                <div id="answer-left" class="answer-card answer-left">
+                    <span class="answer-text">Left Answer</span>
+                </div>
+                <div class="camera-feed-container">
+                    <video id="game-video" autoplay playsinline></video>
+                    <canvas id="face-canvas"></canvas>
+                    <div id="direction-arrow" class="direction-arrow"></div>
+                </div>
+                <div id="answer-right" class="answer-card answer-right">
+                    <span class="answer-text">Right Answer</span>
+                </div>
+            </div>
+
+            <div id="feedback-overlay" class="feedback-overlay hidden">
+                <div class="feedback-content">
+                    <div id="feedback-icon" class="feedback-icon"></div>
+                    <div id="feedback-text" class="feedback-text"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-content">
+                <h2 id="results-title">Great Job! 🎉</h2>
+                <div class="score-circle">
+                    <span id="final-score">0</span>
+                    <span class="score-max">/ 10</span>
+                </div>
+                <p id="results-message">You did amazing!</p>
+                <div class="results-buttons">
+                    <button id="play-again-btn" class="btn btn-primary btn-large">
+                        🔄 Play Again
+                    </button>
+                    <button id="home-btn" class="btn btn-secondary">
+                        🏠 Home
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Manager Screen -->
+        <div id="manager-screen" class="screen">
+            <div class="manager-content">
+                <div class="manager-header">
+                    <h2>📝 Question Manager</h2>
+                    <button id="manager-back-btn" class="btn btn-icon">← Back</button>
+                </div>
+
+                <div class="manager-controls">
+                    <button id="add-question-btn" class="btn btn-primary">
+                        ➕ Add Question
+                    </button>
+                    <button id="reset-questions-btn" class="btn btn-secondary">
+                        🔄 Reset to Default
+                    </button>
+                </div>
+
+                <div id="questions-list" class="questions-list">
+                    <!-- Questions will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Add/Edit Question Modal -->
+            <div id="question-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3 id="modal-title">Add Question</h3>
+                    <form id="question-form">
+                        <div class="form-group">
+                            <label for="question-input">Question (Vietnamese):</label>
+                            <input type="text" id="question-input" placeholder="Hành động nào là bơi?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="correct-answer-input">Correct Answer (English):</label>
+                            <input type="text" id="correct-answer-input" placeholder="swim" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="wrong-answer-input">Wrong Answer (English):</label>
+                            <input type="text" id="wrong-answer-input" placeholder="run" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category-select">Category:</label>
+                            <select id="category-select">
+                                <option value="actions">Actions</option>
+                                <option value="action-sequences">Action Sequences</option>
+                                <option value="animals">Animals</option>
+                                <option value="animal-actions">Animal Actions</option>
+                                <option value="classroom-objects">Classroom Objects</option>
+                                <option value="classroom-commands">Classroom Commands</option>
+                            </select>
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MediaPipe dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
