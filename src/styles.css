@@ -91,6 +91,66 @@ body {
   75% { transform: rotate(5deg); }
 }
 
+/* ===== Game Options ===== */
+.game-options {
+  margin: 20px 0;
+}
+
+.toggle-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 24px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.toggle-option:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.toggle-option input {
+  display: none;
+}
+
+.toggle-slider {
+  width: 50px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-option input:checked + .toggle-slider {
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+}
+
+.toggle-option input:checked + .toggle-slider::after {
+  left: 27px;
+}
+
+.toggle-label {
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
 /* ===== Buttons ===== */
 .btn {
   font-family: var(--font-family);

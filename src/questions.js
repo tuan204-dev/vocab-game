@@ -54,13 +54,13 @@ export function resetToDefault() {
   return [...defaultQuestions];
 }
 
-// Get random questions for a game session
-export function getRandomQuestions(count) {
+// Get questions for a game session
+export function getGameQuestions(shuffle = true) {
   const questions = getQuestions().filter(q => !q.disabled);
-  const shuffled = [...questions].sort(() => Math.random() - 0.5);
-  // If no count specified, return all questions
-  if (!count) return shuffled;
-  return shuffled.slice(0, Math.min(count, shuffled.length));
+  if (shuffle) {
+    return [...questions].sort(() => Math.random() - 0.5);
+  }
+  return [...questions];
 }
 
 // Toggle question disabled state

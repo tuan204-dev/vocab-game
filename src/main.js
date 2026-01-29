@@ -5,7 +5,7 @@ import {
   updateQuestion, 
   deleteQuestion, 
   resetToDefault,
-  getRandomQuestions,
+  getGameQuestions,
   prepareQuestion,
   toggleQuestion
 } from './questions.js';
@@ -135,7 +135,8 @@ async function initializeCamera() {
 
 // Start the actual game
 async function startGame() {
-  state.questions = getRandomQuestions().map(prepareQuestion);
+  const shouldShuffle = document.getElementById('shuffle-toggle').checked;
+  state.questions = getGameQuestions(shouldShuffle).map(prepareQuestion);
   state.currentQuestionIndex = 0;
   state.score = 0;
   state.isAnswering = false;
