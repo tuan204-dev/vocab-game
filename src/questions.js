@@ -55,12 +55,16 @@ export function resetToDefault() {
 }
 
 // Get questions for a game session
-export function getGameQuestions(shuffle = true) {
-  const questions = getQuestions().filter(q => !q.disabled);
+export function getGameQuestions(shuffle = true, limit = null) {
+  let questions = getQuestions().filter(q => !q.disabled);
   if (shuffle) {
-    return [...questions].sort(() => Math.random() - 0.5);
+    questions = [...questions].sort(() => Math.random() - 0.5);
   }
-  return [...questions];
+  // Apply limit if specified
+  if (limit && limit > 0) {
+    questions = questions.slice(0, limit);
+  }
+  return questions;
 }
 
 // Toggle question disabled state

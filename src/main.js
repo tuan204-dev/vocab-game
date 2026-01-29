@@ -51,7 +51,16 @@ const screens = {
 // Initialize the application
 function init() {
   setupEventListeners();
+  loadSavedSettings();
   showScreen('welcome');
+}
+
+// Load saved settings from localStorage
+function loadSavedSettings() {
+  const savedLimit = localStorage.getItem('question-limit');
+  if (savedLimit) {
+    document.getElementById('question-limit').value = savedLimit;
+  }
 }
 
 // Setup all event listeners
@@ -87,6 +96,28 @@ function setupEventListeners() {
   // Authentication modal
   document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
   document.getElementById('cancel-auth-btn').addEventListener('click', closeAuthModal);
+  
+  // Global keyboard shortcuts
+  document.addEventListener('keydown', handleKeyPress);
+}
+
+// Handle keyboard shortcuts
+function handleKeyPress(e) {
+  // Enter key on welcome screen
+  if (state.currentScreen === 'welcome' && e.key === 'Enter') {
+    e.preventDefault();
+    handleStartGame();
+  }
+  // Enter key on instructions screen
+  if (state.currentScreen === 'instructions' && e.key === 'Enter') {
+    e.preventDefault();
+    startGame();
+  }
+  // Enter key on results screen
+  if (state.currentScreen === 'results' && e.key === 'Enter') {
+    e.preventDefault();
+    handlePlayAgain();
+  }
 }
 
 // Screen management
@@ -169,7 +200,17 @@ async function initializeCamera() {
 // Start the actual game
 async function startGame() {
   const shouldShuffle = document.getElementById('shuffle-toggle').checked;
-  state.questions = getGameQuestions(shouldShuffle).map(prepareQuestion);
+  const limitInput = document.getElementById('question-limit');
+  const limit = limitInput.value ? parseInt(limitInput.value) : null;
+  
+  // Save the limit value to localStorage
+  if (limitInput.value) {
+    localStorage.setItem('question-limit', limitInput.value);
+  } else {
+    localStorage.removeItem('question-limit');
+  }
+  
+  state.questions = getGameQuestions(shouldShuffle, limit).map(prepareQuestion);
   state.currentQuestionIndex = 0;
   state.score = 0;
   state.isAnswering = false;
