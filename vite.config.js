@@ -3,7 +3,12 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   server: {
     port: 5173,
-    open: true
+    open: true,
+    host: true
+  },
+  preview: {
+    port: 6007,
+    host: true
   },
   build: {
     outDir: 'dist'

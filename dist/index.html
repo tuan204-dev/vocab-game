@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-CGB8I-GS.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-CA5zx7xs.css">
+  <script type="module" crossorigin src="/assets/index-CrBWokWw.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-B6EKMk5h.css">
 </head>
 
 <body>
@@ -132,7 +132,10 @@
             <div class="manager-content">
                 <div class="manager-header">
                     <h2>📝 Question Manager</h2>
-                    <button id="manager-back-btn" class="btn btn-icon">← Back</button>
+                    <div class="manager-header-buttons">
+                        <button id="manager-start-btn" class="btn btn-primary">▶️ Start Game</button>
+                        <button id="manager-back-btn" class="btn btn-icon">← Back</button>
+                    </div>
                 </div>
 
                 <div class="manager-controls">
@@ -165,17 +168,6 @@
                         <div class="form-group">
                             <label for="wrong-answer-input">Wrong Answer (English):</label>
                             <input type="text" id="wrong-answer-input" placeholder="run" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="category-select">Category:</label>
-                            <select id="category-select">
-                                <option value="actions">Actions</option>
-                                <option value="action-sequences">Action Sequences</option>
-                                <option value="animals">Animals</option>
-                                <option value="animal-actions">Animal Actions</option>
-                                <option value="classroom-objects">Classroom Objects</option>
-                                <option value="classroom-commands">Classroom Commands</option>
-                            </select>
                         </div>
                         <div class="modal-buttons">
                             <button type="submit" class="btn btn-primary">Save</button>
