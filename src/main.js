@@ -6,7 +6,8 @@ import {
   deleteQuestion, 
   resetToDefault,
   getRandomQuestions,
-  prepareQuestion
+  prepareQuestion,
+  toggleQuestion
 } from './questions.js';
 
 import {
@@ -74,6 +75,8 @@ function setupEventListeners() {
   document.getElementById('reset-questions-btn').addEventListener('click', handleResetQuestions);
   document.getElementById('cancel-modal-btn').addEventListener('click', closeQuestionModal);
   document.getElementById('question-form').addEventListener('submit', handleSaveQuestion);
+  document.getElementById('confirm-reset-btn').addEventListener('click', confirmReset);
+  document.getElementById('cancel-reset-btn').addEventListener('click', cancelReset);
 }
 
 // Screen management
@@ -132,7 +135,7 @@ async function initializeCamera() {
 
 // Start the actual game
 async function startGame() {
-  state.questions = getRandomQuestions(10).map(prepareQuestion);
+  state.questions = getRandomQuestions().map(prepareQuestion);
   state.currentQuestionIndex = 0;
   state.score = 0;
   state.isAnswering = false;
@@ -292,7 +295,8 @@ function renderQuestionsList() {
   }
   
   list.innerHTML = questions.map((q, index) => `
-    <div class="question-item" data-index="${index}">
+    <div class="question-item ${q.disabled ? 'disabled' : ''}" data-index="${index}">
+      <div class="question-index">${index + 1}</div>
       <div class="question-info">
         <h4>${q.question}</h4>
         <div class="question-answers">
@@ -301,6 +305,9 @@ function renderQuestionsList() {
         </div>
       </div>
       <div class="question-actions">
+        <button class="btn-toggle ${q.disabled ? 'btn-enable' : 'btn-disable'}" onclick="toggleQuestionHandler(${index})" title="${q.disabled ? 'Enable' : 'Disable'}">
+          ${q.disabled ? '✅' : '🚫'}
+        </button>
         <button class="btn-edit" onclick="editQuestion(${index})">✏️</button>
         <button class="btn-delete" onclick="deleteQuestionHandler(${index})">🗑️</button>
       </div>
@@ -336,6 +343,12 @@ window.deleteQuestionHandler = function(index) {
   renderQuestionsList();
 };
 
+// Toggle question disabled state (exposed globally)
+window.toggleQuestionHandler = function(index) {
+  toggleQuestion(index);
+  renderQuestionsList();
+};
+
 // Close question modal
 function closeQuestionModal() {
   document.getElementById('question-modal').classList.add('hidden');
@@ -362,12 +375,21 @@ function handleSaveQuestion(e) {
   renderQuestionsList();
 }
 
-// Handle reset questions
+// Handle reset questions - show confirm modal
 function handleResetQuestions() {
-  if (confirm('Reset all questions to default? This will remove any custom questions.')) {
-    resetToDefault();
-    renderQuestionsList();
-  }
+  document.getElementById('confirm-reset-modal').classList.remove('hidden');
+}
+
+// Confirm reset
+function confirmReset() {
+  resetToDefault();
+  renderQuestionsList();
+  document.getElementById('confirm-reset-modal').classList.add('hidden');
+}
+
+// Cancel reset
+function cancelReset() {
+  document.getElementById('confirm-reset-modal').classList.add('hidden');
 }
 
 // Initialize when DOM is ready

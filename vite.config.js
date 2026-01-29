@@ -8,7 +8,8 @@ export default defineConfig({
   },
   preview: {
     port: 6007,
-    host: true
+    host: true,
+    allowedHosts: true
   },
   build: {
     outDir: 'dist'

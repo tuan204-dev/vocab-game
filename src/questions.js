@@ -55,10 +55,22 @@ export function resetToDefault() {
 }
 
 // Get random questions for a game session
-export function getRandomQuestions(count = 10) {
-  const questions = getQuestions();
+export function getRandomQuestions(count) {
+  const questions = getQuestions().filter(q => !q.disabled);
   const shuffled = [...questions].sort(() => Math.random() - 0.5);
+  // If no count specified, return all questions
+  if (!count) return shuffled;
   return shuffled.slice(0, Math.min(count, shuffled.length));
+}
+
+// Toggle question disabled state
+export function toggleQuestion(index) {
+  const questions = getQuestions();
+  if (index >= 0 && index < questions.length) {
+    questions[index].disabled = !questions[index].disabled;
+    saveQuestions(questions);
+  }
+  return questions;
 }
 
 // Prepare question with randomized answer positions
