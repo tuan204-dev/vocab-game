@@ -87,6 +87,7 @@
                 <div class="progress-display">
                     <span id="current-question">1</span> / <span id="total-questions">10</span>
                 </div>
+                <button id="end-game-btn" class="btn btn-end-game">⏹️ End</button>
             </div>
 
             <div class="question-container">
@@ -196,6 +197,25 @@
                         <button type="button" id="cancel-reset-btn" class="btn btn-secondary">Cancel</button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Authentication Modal -->
+        <div id="auth-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>🔒 Authentication Required</h3>
+                <p class="auth-description">Please enter the password to manage questions</p>
+                <form id="auth-form">
+                    <div class="form-group">
+                        <label for="password-input">Password:</label>
+                        <input type="password" id="password-input" placeholder="Enter password" required autocomplete="off">
+                        <div id="auth-error" class="auth-error hidden">Incorrect password</div>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" id="cancel-auth-btn" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

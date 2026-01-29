@@ -328,6 +328,20 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
+.btn-end-game {
+  background: linear-gradient(135deg, #9E9E9E 0%, #757575 100%);
+  color: white;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-end-game:hover {
+  background: linear-gradient(135deg, #757575 0%, #616161 100%);
+  transform: scale(1.05);
+}
+
 .score-display {
   font-size: 1.5rem;
   font-weight: 700;
@@ -805,6 +819,24 @@ body {
   gap: 15px;
   justify-content: flex-end;
   margin-top: 25px;
+}
+
+/* ===== Authentication Modal ===== */
+.auth-description {
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.auth-error {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.auth-error.hidden {
+  display: none;
 }
 
 /* ===== Responsive ===== */

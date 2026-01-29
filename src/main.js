@@ -25,6 +25,8 @@ import {
   celebrateScore
 } from './effects.js';
 
+import { config } from './config.js';
+
 // Game State
 const state = {
   currentScreen: 'welcome',
@@ -32,7 +34,8 @@ const state = {
   currentQuestionIndex: 0,
   score: 0,
   isAnswering: false,
-  editingQuestionIndex: null
+  editingQuestionIndex: null,
+  isAuthenticated: false
 };
 
 // DOM Elements cache
@@ -55,7 +58,7 @@ function init() {
 function setupEventListeners() {
   // Welcome screen
   document.getElementById('start-btn').addEventListener('click', handleStartGame);
-  document.getElementById('manage-btn').addEventListener('click', () => showScreen('manager'));
+  document.getElementById('manage-btn').addEventListener('click', handleManageClick);
   
   // Permission screen
   document.getElementById('allow-camera-btn').addEventListener('click', handleAllowCamera);
@@ -68,8 +71,11 @@ function setupEventListeners() {
   document.getElementById('play-again-btn').addEventListener('click', handlePlayAgain);
   document.getElementById('home-btn').addEventListener('click', handleGoHome);
   
+  // Game screen
+  document.getElementById('end-game-btn').addEventListener('click', endGame);
+  
   // Manager screen
-  document.getElementById('manager-back-btn').addEventListener('click', () => showScreen('welcome'));
+  document.getElementById('manager-back-btn').addEventListener('click', handleManagerBack);
   document.getElementById('manager-start-btn').addEventListener('click', handleStartGame);
   document.getElementById('add-question-btn').addEventListener('click', handleAddQuestion);
   document.getElementById('reset-questions-btn').addEventListener('click', handleResetQuestions);
@@ -77,6 +83,10 @@ function setupEventListeners() {
   document.getElementById('question-form').addEventListener('submit', handleSaveQuestion);
   document.getElementById('confirm-reset-btn').addEventListener('click', confirmReset);
   document.getElementById('cancel-reset-btn').addEventListener('click', cancelReset);
+  
+  // Authentication modal
+  document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
+  document.getElementById('cancel-auth-btn').addEventListener('click', closeAuthModal);
 }
 
 // Screen management
@@ -98,6 +108,27 @@ async function handleStartGame() {
     alert('Camera is not available on this device. Please use a device with a camera.');
     return;
   }
+
+  try {
+    // Check permission status via Permissions API
+    // Note: 'camera' permission name might vary by browser (e.g. 'video_capture')
+    // but 'camera' is standard for Permissions API
+    const permissionStatus = await navigator.permissions.query({ name: 'camera' });
+    
+    if (permissionStatus.state === 'granted') {
+      // Already granted! Init camera and skip to instructions
+      // We need to pass elements because we're skipping the normal flow
+      const previewVideo = document.getElementById('preview-video');
+      await initFaceTracking(previewVideo, null);
+      showScreen('instructions');
+      return;
+    }
+  } catch (e) {
+    // Permissions API might not be implemented fully or correctly
+    console.log('Permissions API check failed, falling back to manual flow:', e);
+  }
+
+  // If not granted or check failed, show the permission screen
   showScreen('permission');
 }
 
@@ -110,13 +141,15 @@ async function handleAllowCamera() {
   const hasPermission = await requestCameraPermission();
   
   if (hasPermission) {
-    showScreen('instructions');
     await initializeCamera();
+    showScreen('instructions');
   } else {
     alert('Camera permission was denied. Please allow camera access to play the game.');
-    btn.textContent = 'Allow Camera';
-    btn.disabled = false;
   }
+  
+  // Reset button state
+  btn.textContent = 'Allow Camera Use';
+  btn.disabled = false;
 }
 
 // Initialize camera for instructions/game
@@ -242,14 +275,24 @@ function updateScoreDisplay() {
 }
 
 // End the game
+// End the game
 function endGame() {
   clearTiltCallback();
   stopTracking();
   
-  const percentage = (state.score / state.questions.length) * 100;
+  // If manual end, currentQuestionIndex is the number of questions answered
+  // If natural end, currentQuestionIndex equals questions.length
+  const totalAnswered = state.currentQuestionIndex;
+  
+  // Avoid division by zero
+  const percentage = totalAnswered > 0 ? (state.score / totalAnswered) * 100 : 0;
+  
   let title, message;
   
-  if (percentage >= 90) {
+  if (totalAnswered === 0) {
+     title = 'Game Over';
+     message = 'You didn\'t answer any questions!';
+  } else if (percentage >= 90) {
     title = 'Amazing! 🌟';
     message = 'You are a vocabulary superstar!';
   } else if (percentage >= 70) {
@@ -265,11 +308,13 @@ function endGame() {
   
   document.getElementById('results-title').textContent = title;
   document.getElementById('final-score').textContent = state.score;
-  document.querySelector('.score-max').textContent = `/ ${state.questions.length}`;
+  document.querySelector('.score-max').textContent = `/ ${totalAnswered}`;
   document.getElementById('results-message').textContent = message;
   
   showScreen('results');
-  celebrateScore(state.score, state.questions.length);
+  if (state.score > 0) {
+    celebrateScore(state.score, totalAnswered);
+  }
 }
 
 // Handle play again
@@ -391,6 +436,47 @@ function confirmReset() {
 // Cancel reset
 function cancelReset() {
   document.getElementById('confirm-reset-modal').classList.add('hidden');
+}
+
+// Authentication functions
+function handleManageClick() {
+  // Show authentication modal
+  document.getElementById('auth-modal').classList.remove('hidden');
+  document.getElementById('password-input').value = '';
+  document.getElementById('auth-error').classList.add('hidden');
+  // Focus on password input
+  setTimeout(() => {
+    document.getElementById('password-input').focus();
+  }, 100);
+}
+
+function handleAuthSubmit(e) {
+  e.preventDefault();
+  const passwordInput = document.getElementById('password-input');
+  const authError = document.getElementById('auth-error');
+  
+  if (passwordInput.value === config.managerPassword) {
+    // Authentication successful
+    state.isAuthenticated = true;
+    closeAuthModal();
+    showScreen('manager');
+  } else {
+    // Show error
+    authError.classList.remove('hidden');
+    passwordInput.value = '';
+    passwordInput.focus();
+  }
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-modal').classList.add('hidden');
+  document.getElementById('password-input').value = '';
+  document.getElementById('auth-error').classList.add('hidden');
+}
+
+function handleManagerBack() {
+  state.isAuthenticated = false;
+  showScreen('welcome');
 }
 
 // Initialize when DOM is ready
