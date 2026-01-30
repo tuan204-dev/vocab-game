@@ -78,7 +78,6 @@ function setupEventListeners() {
   
   // Results screen
   document.getElementById('play-again-btn').addEventListener('click', handlePlayAgain);
-  document.getElementById('home-btn').addEventListener('click', handleGoHome);
   
   // Game screen
   document.getElementById('end-game-btn').addEventListener('click', endGame);
@@ -112,11 +111,6 @@ function handleKeyPress(e) {
   if (state.currentScreen === 'instructions' && e.key === 'Enter') {
     e.preventDefault();
     startGame();
-  }
-  // Enter key on results screen
-  if (state.currentScreen === 'results' && e.key === 'Enter') {
-    e.preventDefault();
-    handlePlayAgain();
   }
 }
 
@@ -361,12 +355,6 @@ function endGame() {
 // Handle play again
 async function handlePlayAgain() {
   window.location.reload();
-}
-
-// Handle go home
-function handleGoHome() {
-  stopTracking();
-  showScreen('welcome');
 }
 
 // ===== Question Manager Functions =====
