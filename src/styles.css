@@ -642,6 +642,85 @@ body {
   flex-wrap: wrap;
 }
 
+.unit-manager {
+  background: #f3f4f6;
+  border-radius: 15px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.unit-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.unit-manager-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.unit-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.unit-select-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.unit-select-row label {
+  font-weight: 600;
+  color: #555;
+}
+
+.unit-select-row select {
+  min-width: 220px;
+}
+
+.unit-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.unit-tab {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: white;
+  color: #666;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.unit-tab:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+}
+
+.unit-tab.active {
+  background: linear-gradient(135deg, #6C63FF 0%, #7C6BFF 100%);
+  color: white;
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 16px rgba(108, 99, 255, 0.3);
+}
+
+.btn-small {
+  font-size: 0.95rem;
+  padding: 8px 18px;
+  margin: 0;
+}
+
 .questions-list {
   display: grid;
   gap: 15px;
@@ -773,6 +852,45 @@ body {
 .question-item.disabled h4 {
   text-decoration: line-through;
   color: #999;
+}
+
+/* ===== Unit Select on Welcome ===== */
+.unit-select-option {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px 25px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 300px;
+}
+
+.unit-select-option label {
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.unit-select-option select {
+  padding: 10px 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+
+.unit-select-option select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: white;
+}
+
+.unit-hint {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  font-style: italic;
 }
 
 /* ===== Modal ===== */

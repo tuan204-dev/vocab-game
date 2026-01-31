@@ -1,13 +1,16 @@
 import { 
   getQuestions, 
-  saveQuestions, 
   addQuestion, 
   updateQuestion, 
   deleteQuestion, 
   resetToDefault,
   getGameQuestions,
   prepareQuestion,
-  toggleQuestion
+  toggleQuestion,
+  getUnits,
+  addUnit,
+  updateUnit,
+  deleteUnit
 } from './questions.js';
 
 import {
@@ -34,7 +37,9 @@ const state = {
   currentQuestionIndex: 0,
   score: 0,
   isAnswering: false,
-  editingQuestionIndex: null,
+  editingQuestionId: null,
+  editingUnitId: null,
+  unitModalMode: 'add',
   isAuthenticated: false
 };
 
@@ -52,6 +57,7 @@ const screens = {
 function init() {
   setupEventListeners();
   loadSavedSettings();
+  refreshUnitSelectors();
   showScreen('welcome');
 }
 
@@ -68,6 +74,7 @@ function setupEventListeners() {
   // Welcome screen
   document.getElementById('start-btn').addEventListener('click', handleStartGame);
   document.getElementById('manage-btn').addEventListener('click', handleManageClick);
+  document.getElementById('unit-select').addEventListener('change', handleWelcomeUnitChange);
   
   // Permission screen
   document.getElementById('allow-camera-btn').addEventListener('click', handleAllowCamera);
@@ -91,6 +98,13 @@ function setupEventListeners() {
   document.getElementById('question-form').addEventListener('submit', handleSaveQuestion);
   document.getElementById('confirm-reset-btn').addEventListener('click', confirmReset);
   document.getElementById('cancel-reset-btn').addEventListener('click', cancelReset);
+  document.getElementById('add-unit-btn').addEventListener('click', () => openUnitModal('add'));
+  document.getElementById('rename-unit-btn').addEventListener('click', () => openUnitModal('rename'));
+  document.getElementById('delete-unit-btn').addEventListener('click', handleDeleteUnitClick);
+  document.getElementById('unit-form').addEventListener('submit', handleSaveUnit);
+  document.getElementById('cancel-unit-modal-btn').addEventListener('click', closeUnitModal);
+  document.getElementById('confirm-delete-unit-btn').addEventListener('click', confirmDeleteUnit);
+  document.getElementById('cancel-delete-unit-btn').addEventListener('click', cancelDeleteUnit);
   
   // Authentication modal
   document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
@@ -123,6 +137,7 @@ function showScreen(screenName) {
   state.currentScreen = screenName;
   
   if (screenName === 'manager') {
+    refreshUnitSelectors();
     renderQuestionsList();
   }
 }
@@ -196,6 +211,12 @@ async function startGame() {
   const shouldShuffle = document.getElementById('shuffle-toggle').checked;
   const limitInput = document.getElementById('question-limit');
   const limit = limitInput.value ? parseInt(limitInput.value) : null;
+  const selectedUnitIds = getSelectedUnitIds();
+
+  if (!selectedUnitIds || selectedUnitIds.length === 0) {
+    alert('Please choose at least one unit to play.');
+    return;
+  }
   
   // Save the limit value to localStorage
   if (limitInput.value) {
@@ -204,7 +225,11 @@ async function startGame() {
     localStorage.removeItem('question-limit');
   }
   
-  state.questions = getGameQuestions(shouldShuffle, limit).map(prepareQuestion);
+  state.questions = getGameQuestions(shouldShuffle, limit, selectedUnitIds).map(prepareQuestion);
+  if (state.questions.length === 0) {
+    alert('These units have no active questions. Please choose another unit or add questions.');
+    return;
+  }
   state.currentQuestionIndex = 0;
   state.score = 0;
   state.isAnswering = false;
@@ -362,7 +387,8 @@ async function handlePlayAgain() {
 // Render questions list
 function renderQuestionsList() {
   const list = document.getElementById('questions-list');
-  const questions = getQuestions();
+  const activeUnitId = getActiveManagerUnitId();
+  const questions = getQuestions(activeUnitId);
   
   if (questions.length === 0) {
     list.innerHTML = '<p style="text-align: center; color: #888;">No questions yet. Add some!</p>';
@@ -370,7 +396,7 @@ function renderQuestionsList() {
   }
   
   list.innerHTML = questions.map((q, index) => `
-    <div class="question-item ${q.disabled ? 'disabled' : ''}" data-index="${index}">
+    <div class="question-item ${q.disabled ? 'disabled' : ''}" data-id="${q.id}">
       <div class="question-index">${index + 1}</div>
       <div class="question-info">
         <h4>${q.question}</h4>
@@ -380,11 +406,11 @@ function renderQuestionsList() {
         </div>
       </div>
       <div class="question-actions">
-        <button class="btn-toggle ${q.disabled ? 'btn-enable' : 'btn-disable'}" onclick="toggleQuestionHandler(${index})" title="${q.disabled ? 'Enable' : 'Disable'}">
+        <button class="btn-toggle ${q.disabled ? 'btn-enable' : 'btn-disable'}" onclick="toggleQuestionHandler('${q.id}')" title="${q.disabled ? 'Enable' : 'Disable'}">
           ${q.disabled ? '✅' : '🚫'}
         </button>
-        <button class="btn-edit" onclick="editQuestion(${index})">✏️</button>
-        <button class="btn-delete" onclick="deleteQuestionHandler(${index})">🗑️</button>
+        <button class="btn-edit" onclick="editQuestion('${q.id}')">✏️</button>
+        <button class="btn-delete" onclick="deleteQuestionHandler('${q.id}')">🗑️</button>
       </div>
     </div>
   `).join('');
@@ -392,42 +418,49 @@ function renderQuestionsList() {
 
 // Handle add question
 function handleAddQuestion() {
-  state.editingQuestionIndex = null;
+  state.editingQuestionId = null;
   document.getElementById('modal-title').textContent = 'Add Question';
   document.getElementById('question-form').reset();
+  const unitSelect = document.getElementById('question-unit-select');
+  const activeUnitId = getActiveManagerUnitId();
+  if (unitSelect && activeUnitId) {
+    unitSelect.value = activeUnitId;
+  }
   document.getElementById('question-modal').classList.remove('hidden');
 }
 
 // Edit question (exposed globally)
 window.editQuestion = function(index) {
   const questions = getQuestions();
-  const question = questions[index];
+  const question = questions.find(q => q.id === index);
+  if (!question) return;
   
-  state.editingQuestionIndex = index;
+  state.editingQuestionId = question.id;
   document.getElementById('modal-title').textContent = 'Edit Question';
   document.getElementById('question-input').value = question.question;
   document.getElementById('correct-answer-input').value = question.correct;
   document.getElementById('wrong-answer-input').value = question.wrong;
+  document.getElementById('question-unit-select').value = question.unitId;
   
   document.getElementById('question-modal').classList.remove('hidden');
 };
 
 // Delete question handler (exposed globally)
-window.deleteQuestionHandler = function(index) {
-  deleteQuestion(index);
+window.deleteQuestionHandler = function(questionId) {
+  deleteQuestion(questionId);
   renderQuestionsList();
 };
 
 // Toggle question disabled state (exposed globally)
-window.toggleQuestionHandler = function(index) {
-  toggleQuestion(index);
+window.toggleQuestionHandler = function(questionId) {
+  toggleQuestion(questionId);
   renderQuestionsList();
 };
 
 // Close question modal
 function closeQuestionModal() {
   document.getElementById('question-modal').classList.add('hidden');
-  state.editingQuestionIndex = null;
+  state.editingQuestionId = null;
 }
 
 // Handle save question
@@ -437,11 +470,12 @@ function handleSaveQuestion(e) {
   const questionData = {
     question: document.getElementById('question-input').value.trim(),
     correct: document.getElementById('correct-answer-input').value.trim(),
-    wrong: document.getElementById('wrong-answer-input').value.trim()
+    wrong: document.getElementById('wrong-answer-input').value.trim(),
+    unitId: document.getElementById('question-unit-select').value
   };
   
-  if (state.editingQuestionIndex !== null) {
-    updateQuestion(state.editingQuestionIndex, questionData);
+  if (state.editingQuestionId !== null) {
+    updateQuestion(state.editingQuestionId, questionData);
   } else {
     addQuestion(questionData);
   }
@@ -458,6 +492,7 @@ function handleResetQuestions() {
 // Confirm reset
 function confirmReset() {
   resetToDefault();
+  refreshUnitSelectors();
   renderQuestionsList();
   document.getElementById('confirm-reset-modal').classList.add('hidden');
 }
@@ -506,6 +541,149 @@ function closeAuthModal() {
 function handleManagerBack() {
   state.isAuthenticated = false;
   showScreen('welcome');
+}
+
+// ===== Unit Management =====
+function refreshUnitSelectors() {
+  const units = getUnits();
+  const welcomeSelect = document.getElementById('unit-select');
+  const questionUnitSelect = document.getElementById('question-unit-select');
+  const savedUnitIds = JSON.parse(localStorage.getItem('selected-unit-ids') || '[]');
+  const savedManagerUnitId = localStorage.getItem('active-unit-id');
+
+  const fallbackUnitId = units[0] ? units[0].id : '';
+  const selectedIds = savedUnitIds.filter(id => units.some(u => u.id === id));
+  const managerUnitId = savedManagerUnitId && units.some(u => u.id === savedManagerUnitId)
+    ? savedManagerUnitId
+    : fallbackUnitId;
+
+  const optionsHtml = units.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+  if (welcomeSelect) welcomeSelect.innerHTML = optionsHtml;
+  if (questionUnitSelect) questionUnitSelect.innerHTML = optionsHtml;
+
+  if (welcomeSelect) {
+    Array.from(welcomeSelect.options).forEach(opt => {
+      opt.selected = selectedIds.length > 0 ? selectedIds.includes(opt.value) : opt.value === fallbackUnitId;
+    });
+  }
+
+  const persistedIds = selectedIds.length > 0 ? selectedIds : (fallbackUnitId ? [fallbackUnitId] : []);
+  localStorage.setItem('selected-unit-ids', JSON.stringify(persistedIds));
+  if (managerUnitId) {
+    localStorage.setItem('active-unit-id', managerUnitId);
+  }
+
+  renderUnitTabs(units, managerUnitId);
+  if (questionUnitSelect) questionUnitSelect.value = managerUnitId;
+}
+
+function handleWelcomeUnitChange(e) {
+  const unitIds = Array.from(e.target.selectedOptions).map(opt => opt.value);
+  localStorage.setItem('selected-unit-ids', JSON.stringify(unitIds));
+}
+
+function getSelectedUnitIds() {
+  const select = document.getElementById('unit-select');
+  if (!select) return [];
+  return Array.from(select.selectedOptions).map(opt => opt.value);
+}
+
+function getActiveManagerUnitId() {
+  const units = getUnits();
+  const savedId = localStorage.getItem('active-unit-id');
+  const validId = savedId && units.some(u => u.id === savedId) ? savedId : (units[0] ? units[0].id : null);
+  if (validId) {
+    localStorage.setItem('active-unit-id', validId);
+  }
+  return validId;
+}
+
+function openUnitModal(mode) {
+  state.unitModalMode = mode;
+  const title = mode === 'add' ? 'Add Unit' : 'Rename Unit';
+  document.getElementById('unit-modal-title').textContent = title;
+  const input = document.getElementById('unit-name-input');
+  const units = getUnits();
+  const activeUnitId = getActiveManagerUnitId();
+  const activeUnit = units.find(u => u.id === activeUnitId);
+  input.value = mode === 'rename' && activeUnit ? activeUnit.name : '';
+  document.getElementById('unit-modal').classList.remove('hidden');
+  input.focus();
+}
+
+function closeUnitModal() {
+  document.getElementById('unit-modal').classList.add('hidden');
+  document.getElementById('unit-name-input').value = '';
+}
+
+function handleSaveUnit(e) {
+  e.preventDefault();
+  const name = document.getElementById('unit-name-input').value.trim();
+  if (!name) return;
+
+  if (state.unitModalMode === 'add') {
+    const unit = addUnit(name);
+    refreshUnitSelectors();
+    localStorage.setItem('active-unit-id', unit.id);
+  } else {
+    const activeUnitId = getActiveManagerUnitId();
+    if (activeUnitId) {
+      updateUnit(activeUnitId, name);
+    }
+    refreshUnitSelectors();
+  }
+
+  closeUnitModal();
+  renderQuestionsList();
+}
+
+function handleDeleteUnitClick() {
+  const units = getUnits();
+  if (units.length <= 1) {
+    alert('You must have at least one unit.');
+    return;
+  }
+  const activeUnitId = getActiveManagerUnitId();
+  const activeUnit = units.find(u => u.id === activeUnitId);
+  document.getElementById('delete-unit-name').textContent = activeUnit ? activeUnit.name : '';
+  document.getElementById('confirm-delete-unit-modal').classList.remove('hidden');
+}
+
+function confirmDeleteUnit() {
+  const activeUnitId = getActiveManagerUnitId();
+  if (activeUnitId) {
+    deleteUnit(activeUnitId);
+    refreshUnitSelectors();
+    renderQuestionsList();
+  }
+  cancelDeleteUnit();
+}
+
+function cancelDeleteUnit() {
+  document.getElementById('confirm-delete-unit-modal').classList.add('hidden');
+}
+
+function renderUnitTabs(units, activeUnitId) {
+  const tabsContainer = document.getElementById('unit-tabs');
+  if (!tabsContainer) return;
+
+  if (units.length === 0) {
+    tabsContainer.innerHTML = '';
+    return;
+  }
+
+  tabsContainer.innerHTML = units.map(u => `
+    <button class="unit-tab ${u.id === activeUnitId ? 'active' : ''}" data-unit-id="${u.id}">${u.name}</button>
+  `).join('');
+
+  tabsContainer.querySelectorAll('.unit-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const unitId = btn.getAttribute('data-unit-id');
+      localStorage.setItem('active-unit-id', unitId);
+      refreshUnitSelectors();
+      renderQuestionsList();
+    });
+  });
 }
 
 // Initialize when DOM is ready

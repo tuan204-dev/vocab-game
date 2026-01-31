@@ -35,6 +35,12 @@
                             <span class="limit-hint">(Leave empty for all questions)</span>
                         </div>
                     </div>
+
+                    <div class="unit-select-option">
+                        <label for="unit-select">🧩 Choose Unit(s):</label>
+                        <select id="unit-select" multiple size="4"></select>
+                        <span class="unit-hint">(Hold Cmd/⌘ to select multiple)</span>
+                    </div>
                 </div>
 
                 <button id="start-btn" class="btn btn-primary btn-large">
@@ -161,6 +167,18 @@
                     </button>
                 </div>
 
+                <div class="unit-manager">
+                    <div class="unit-manager-header">
+                        <h3>📚 Units</h3>
+                        <div class="unit-actions">
+                            <button id="add-unit-btn" class="btn btn-primary btn-small">➕ Add Unit</button>
+                            <button id="rename-unit-btn" class="btn btn-secondary btn-small">✏️ Rename</button>
+                            <button id="delete-unit-btn" class="btn btn-danger btn-small">🗑️ Delete</button>
+                        </div>
+                    </div>
+                    <div id="unit-tabs" class="unit-tabs"></div>
+                </div>
+
                 <div id="questions-list" class="questions-list">
                     <!-- Questions will be rendered here -->
                 </div>
@@ -183,11 +201,45 @@
                             <label for="wrong-answer-input">Wrong Answer (English):</label>
                             <input type="text" id="wrong-answer-input" placeholder="run" required>
                         </div>
+                        <div class="form-group">
+                            <label for="question-unit-select">Unit:</label>
+                            <select id="question-unit-select" required></select>
+                        </div>
                         <div class="modal-buttons">
                             <button type="submit" class="btn btn-primary">Save</button>
                             <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <!-- Add/Rename Unit Modal -->
+            <div id="unit-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3 id="unit-modal-title">Add Unit</h3>
+                    <form id="unit-form">
+                        <div class="form-group">
+                            <label for="unit-name-input">Unit Name:</label>
+                            <input type="text" id="unit-name-input" placeholder="Unit name" required>
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" id="cancel-unit-modal-btn" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Confirm Delete Unit Modal -->
+            <div id="confirm-delete-unit-modal" class="modal hidden">
+                <div class="modal-content confirm-modal">
+                    <div class="confirm-icon">⚠️</div>
+                    <h3>Delete Unit?</h3>
+                    <p>This will remove the unit <strong id="delete-unit-name"></strong> and all its questions.</p>
+                    <div class="modal-buttons">
+                        <button type="button" id="confirm-delete-unit-btn" class="btn btn-danger">Delete</button>
+                        <button type="button" id="cancel-delete-unit-btn" class="btn btn-secondary">Cancel</button>
+                    </div>
                 </div>
             </div>
 

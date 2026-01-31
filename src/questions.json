@@ -1,222 +1,447 @@
 [
   {
-    "question": "What is 'bơi'?",
-    "correct": "swim",
-    "wrong": "skate"
+    "unit": "Supper Kid",
+    "question": [
+      {
+        "question": "What is 'bơi'?",
+        "correct": "swim",
+        "wrong": "skate"
+      },
+      {
+        "question": "What is 'trượt băng'?",
+        "correct": "skate",
+        "wrong": "swim"
+      },
+      {
+        "question": "What is 'trượt ván'?",
+        "correct": "skateboard",
+        "wrong": "ride a bike"
+      },
+      {
+        "question": "What is 'thả diều'?",
+        "correct": "fly a kite",
+        "wrong": "juggle"
+      },
+      {
+        "question": "What is 'vẽ'?",
+        "correct": "draw",
+        "wrong": "sing"
+      },
+      {
+        "question": "What is 'đạp xe'?",
+        "correct": "ride a bike",
+        "wrong": "skateboard"
+      },
+      {
+        "question": "What is 'tung hứng'?",
+        "correct": "juggle",
+        "wrong": "fly a kite"
+      },
+      {
+        "question": "What is 'hát'?",
+        "correct": "sing",
+        "wrong": "draw"
+      },
+      {
+        "question": "What is 'nhảy vào hồ bơi'?",
+        "correct": "jump in the pool",
+        "wrong": "kick my feet"
+      },
+      {
+        "question": "What is 'đạp chân'?",
+        "correct": "kick my feet",
+        "wrong": "jump in the pool"
+      },
+      {
+        "question": "What is 'cởi giày'?",
+        "correct": "take off my shoes",
+        "wrong": "put on my skates"
+      },
+      {
+        "question": "What is 'đi giày trượt'?",
+        "correct": "put on my skates",
+        "wrong": "take off my shoes"
+      },
+      {
+        "question": "What is 'lên ván trượt'?",
+        "correct": "get on my skateboard",
+        "wrong": "get off my bike"
+      },
+      {
+        "question": "What is 'xuống xe đạp'?",
+        "correct": "get off my bike",
+        "wrong": "get on my skateboard"
+      },
+      {
+        "question": "What is 'nhấc chuột hamster lên'?",
+        "correct": "pick up the hamster",
+        "wrong": "put down the hamster"
+      },
+      {
+        "question": "What is 'đặt chuột hamster xuống'?",
+        "correct": "put down the hamster",
+        "wrong": "pick up the hamster"
+      },
+      {
+        "question": "What is 'cho cá ăn'?",
+        "correct": "feed the fish",
+        "wrong": "pet the rabbit"
+      },
+      {
+        "question": "What is 'vuốt ve con thỏ'?",
+        "correct": "pet the rabbit",
+        "wrong": "brush the cat"
+      },
+      {
+        "question": "What is 'chải lông con mèo'?",
+        "correct": "brush the cat",
+        "wrong": "walk the dog"
+      },
+      {
+        "question": "What is 'dắt chó đi dạo'?",
+        "correct": "walk the dog",
+        "wrong": "feed the fish"
+      },
+      {
+        "question": "What is 'đi lên bảng'?",
+        "correct": "go to the board",
+        "wrong": "go back to your seat"
+      },
+      {
+        "question": "What is 'quay về chỗ ngồi'?",
+        "correct": "go back to your seat",
+        "wrong": "go to the board"
+      },
+      {
+        "question": "What is 'bật máy tính'?",
+        "correct": "turn on the computer",
+        "wrong": "turn up the computer"
+      },
+      {
+        "question": "What is 'tăng âm lượng máy tính'?",
+        "correct": "turn up the computer",
+        "wrong": "turn on the computer"
+      },
+      {
+        "question": "What is 'viết tên của con'?",
+        "correct": "write your name",
+        "wrong": "throw away the trash"
+      },
+      {
+        "question": "What is 'vứt rác'?",
+        "correct": "throw away the trash",
+        "wrong": "write your name"
+      },
+      {
+        "question": "What is 'con cá'?",
+        "correct": "fish",
+        "wrong": "bird"
+      },
+      {
+        "question": "What is 'con thỏ'?",
+        "correct": "rabbit",
+        "wrong": "hamster"
+      },
+      {
+        "question": "What is 'con rùa'?",
+        "correct": "turtle",
+        "wrong": "snake"
+      },
+      {
+        "question": "What is 'con chó'?",
+        "correct": "dog",
+        "wrong": "cat"
+      },
+      {
+        "question": "What is 'con mèo'?",
+        "correct": "cat",
+        "wrong": "dog"
+      },
+      {
+        "question": "What is 'con rắn'?",
+        "correct": "snake",
+        "wrong": "turtle"
+      },
+      {
+        "question": "What is 'chuột hamster'?",
+        "correct": "hamster",
+        "wrong": "rabbit"
+      },
+      {
+        "question": "What is 'con chim'?",
+        "correct": "bird",
+        "wrong": "duck"
+      },
+      {
+        "question": "What is 'con vịt'?",
+        "correct": "duck",
+        "wrong": "bird"
+      },
+      {
+        "question": "What is 'con gấu trúc'?",
+        "correct": "panda",
+        "wrong": "hamster"
+      },
+      {
+        "question": "What is 'đồng hồ'?",
+        "correct": "clock",
+        "wrong": "computer"
+      },
+      {
+        "question": "What is 'bảng'?",
+        "correct": "board",
+        "wrong": "door"
+      },
+      {
+        "question": "What is 'cửa'?",
+        "correct": "door",
+        "wrong": "board"
+      },
+      {
+        "question": "What is 'bàn học'?",
+        "correct": "desk",
+        "wrong": "chair"
+      },
+      {
+        "question": "What is 'máy nghe đĩa CD'?",
+        "correct": "CD player",
+        "wrong": "computer"
+      },
+      {
+        "question": "What is 'thùng rác'?",
+        "correct": "trash can",
+        "wrong": "desk"
+      },
+      {
+        "question": "What is 'máy tính'?",
+        "correct": "computer",
+        "wrong": "CD player"
+      },
+      {
+        "question": "What is 'ghế'?",
+        "correct": "chair",
+        "wrong": "desk"
+      }
+    ]
   },
   {
-    "question": "What is 'trượt băng'?",
-    "correct": "skate",
-    "wrong": "swim"
+    "unit": "Supper Kids 1 Unit 4, 5, 6",
+    "question": [
+      {
+        "question": "What is 'lớp tiếng Anh'?",
+        "correct": "English class",
+        "wrong": "math class"
+      },
+      {
+        "question": "What is 'lớp toán'?",
+        "correct": "math class",
+        "wrong": "English class"
+      },
+      {
+        "question": "What is 'lớp luyện chữ'?",
+        "correct": "calligraphy class",
+        "wrong": "dance class"
+      },
+      {
+        "question": "What is 'lớp bơi'?",
+        "correct": "swimming class",
+        "wrong": "soccer practice"
+      },
+      {
+        "question": "What is 'lớp nhảy'?",
+        "correct": "dance class",
+        "wrong": "swimming class"
+      },
+      {
+        "question": "What is 'buổi tập bóng đá'?",
+        "correct": "soccer practice",
+        "wrong": "baseball practice"
+      },
+      {
+        "question": "What is 'buổi tập judo'?",
+        "correct": "judo practice",
+        "wrong": "soccer practice"
+      },
+      {
+        "question": "What is 'buổi tập bóng chày'?",
+        "correct": "baseball practice",
+        "wrong": "judo practice"
+      },
+      {
+        "question": "What is 'ăn bữa ăn nhẹ'?",
+        "correct": "eating a snack",
+        "wrong": "drinking juice"
+      },
+      {
+        "question": "What is 'uống nước ép'?",
+        "correct": "drinking juice",
+        "wrong": "eating a snack"
+      },
+      {
+        "question": "What is 'chơi trống'?",
+        "correct": "playing the drums",
+        "wrong": "watching a DVD"
+      },
+      {
+        "question": "What is 'xem đĩa DVD'?",
+        "correct": "watching a DVD",
+        "wrong": "reading a book"
+      },
+      {
+        "question": "What is 'đọc sách'?",
+        "correct": "reading a book",
+        "wrong": "drawing a map"
+      },
+      {
+        "question": "What is 'cho chuột hamster ăn'?",
+        "correct": "feeding the hamster",
+        "wrong": "painting a picture"
+      },
+      {
+        "question": "What is 'vẽ tranh'?",
+        "correct": "painting a picture",
+        "wrong": "drawing a map"
+      },
+      {
+        "question": "What is 'vẽ bản đồ'?",
+        "correct": "drawing a map",
+        "wrong": "reading a book"
+      }
+    ]
   },
   {
-    "question": "What is 'trượt ván'?",
-    "correct": "skateboard",
-    "wrong": "ride a bike"
-  },
-  {
-    "question": "What is 'thả diều'?",
-    "correct": "fly a kite",
-    "wrong": "juggle"
-  },
-  {
-    "question": "What is 'vẽ'?",
-    "correct": "draw",
-    "wrong": "sing"
-  },
-  {
-    "question": "What is 'đạp xe'?",
-    "correct": "ride a bike",
-    "wrong": "skateboard"
-  },
-  {
-    "question": "What is 'tung hứng'?",
-    "correct": "juggle",
-    "wrong": "fly a kite"
-  },
-  {
-    "question": "What is 'hát'?",
-    "correct": "sing",
-    "wrong": "draw"
-  },
-  {
-    "question": "What is 'nhảy vào hồ bơi'?",
-    "correct": "jump in the pool",
-    "wrong": "kick my feet"
-  },
-  {
-    "question": "What is 'đạp chân'?",
-    "correct": "kick my feet",
-    "wrong": "jump in the pool"
-  },
-  {
-    "question": "What is 'cởi giày'?",
-    "correct": "take off my shoes",
-    "wrong": "put on my skates"
-  },
-  {
-    "question": "What is 'đi giày trượt'?",
-    "correct": "put on my skates",
-    "wrong": "take off my shoes"
-  },
-  {
-    "question": "What is 'lên ván trượt'?",
-    "correct": "get on my skateboard",
-    "wrong": "get off my bike"
-  },
-  {
-    "question": "What is 'xuống xe đạp'?",
-    "correct": "get off my bike",
-    "wrong": "get on my skateboard"
-  },
-  {
-    "question": "What is 'nhấc chuột hamster lên'?",
-    "correct": "pick up the hamster",
-    "wrong": "put down the hamster"
-  },
-  {
-    "question": "What is 'đặt chuột hamster xuống'?",
-    "correct": "put down the hamster",
-    "wrong": "pick up the hamster"
-  },
-  {
-    "question": "What is 'cho cá ăn'?",
-    "correct": "feed the fish",
-    "wrong": "pet the rabbit"
-  },
-  {
-    "question": "What is 'vuốt ve con thỏ'?",
-    "correct": "pet the rabbit",
-    "wrong": "brush the cat"
-  },
-  {
-    "question": "What is 'chải lông con mèo'?",
-    "correct": "brush the cat",
-    "wrong": "walk the dog"
-  },
-  {
-    "question": "What is 'dắt chó đi dạo'?",
-    "correct": "walk the dog",
-    "wrong": "feed the fish"
-  },
-  {
-    "question": "What is 'đi lên bảng'?",
-    "correct": "go to the board",
-    "wrong": "go back to your seat"
-  },
-  {
-    "question": "What is 'quay về chỗ ngồi'?",
-    "correct": "go back to your seat",
-    "wrong": "go to the board"
-  },
-  {
-    "question": "What is 'bật máy tính'?",
-    "correct": "turn on the computer",
-    "wrong": "turn up the computer"
-  },
-  {
-    "question": "What is 'tăng âm lượng máy tính'?",
-    "correct": "turn up the computer",
-    "wrong": "turn on the computer"
-  },
-  {
-    "question": "What is 'viết tên của con'?",
-    "correct": "write your name",
-    "wrong": "throw away the trash"
-  },
-  {
-    "question": "What is 'vứt rác'?",
-    "correct": "throw away the trash",
-    "wrong": "write your name"
-  },
-  {
-    "question": "What is 'con cá'?",
-    "correct": "fish",
-    "wrong": "bird"
-  },
-  {
-    "question": "What is 'con thỏ'?",
-    "correct": "rabbit",
-    "wrong": "hamster"
-  },
-  {
-    "question": "What is 'con rùa'?",
-    "correct": "turtle",
-    "wrong": "snake"
-  },
-  {
-    "question": "What is 'con chó'?",
-    "correct": "dog",
-    "wrong": "cat"
-  },
-  {
-    "question": "What is 'con mèo'?",
-    "correct": "cat",
-    "wrong": "dog"
-  },
-  {
-    "question": "What is 'con rắn'?",
-    "correct": "snake",
-    "wrong": "turtle"
-  },
-  {
-    "question": "What is 'chuột hamster'?",
-    "correct": "hamster",
-    "wrong": "rabbit"
-  },
-  {
-    "question": "What is 'con chim'?",
-    "correct": "bird",
-    "wrong": "duck"
-  },
-  {
-    "question": "What is 'con vịt'?",
-    "correct": "duck",
-    "wrong": "bird"
-  },
-  {
-    "question": "What is 'con gấu trúc'?",
-    "correct": "panda",
-    "wrong": "hamster"
-  },
-  {
-    "question": "What is 'đồng hồ'?",
-    "correct": "clock",
-    "wrong": "computer"
-  },
-  {
-    "question": "What is 'bảng'?",
-    "correct": "board",
-    "wrong": "door"
-  },
-  {
-    "question": "What is 'cửa'?",
-    "correct": "door",
-    "wrong": "board"
-  },
-  {
-    "question": "What is 'bàn học'?",
-    "correct": "desk",
-    "wrong": "chair"
-  },
-  {
-    "question": "What is 'máy nghe đĩa CD'?",
-    "correct": "CD player",
-    "wrong": "computer"
-  },
-  {
-    "question": "What is 'thùng rác'?",
-    "correct": "trash can",
-    "wrong": "desk"
-  },
-  {
-    "question": "What is 'máy tính'?",
-    "correct": "computer",
-    "wrong": "CD player"
-  },
-  {
-    "question": "What is 'ghế'?",
-    "correct": "chair",
-    "wrong": "desk"
+    "unit": "Supper Kids 2 Unit 7, 8, 9",
+    "question": [
+      {
+        "question": "What is 'cái kéo'?",
+        "correct": "scissors",
+        "wrong": "paintbrushes"
+      },
+      {
+        "question": "What is 'cọ vẽ'?",
+        "correct": "paintbrushes",
+        "wrong": "paints"
+      },
+      {
+        "question": "What is 'màu vẽ'?",
+        "correct": "paints",
+        "wrong": "stickers"
+      },
+      {
+        "question": "What is 'nhãn dán'?",
+        "correct": "stickers",
+        "wrong": "pins"
+      },
+      {
+        "question": "What is 'ghim'?",
+        "correct": "pins",
+        "wrong": "scissors"
+      },
+      {
+        "question": "What is 'ở trong'?",
+        "correct": "in",
+        "wrong": "on"
+      },
+      {
+        "question": "What is 'ở trên'?",
+        "correct": "on",
+        "wrong": "under"
+      },
+      {
+        "question": "What is 'ở dưới'?",
+        "correct": "under",
+        "wrong": "in"
+      },
+      {
+        "question": "What is 'vẽ đầu và thân'?",
+        "correct": "draw a head and a body",
+        "wrong": "draw 4 legs"
+      },
+      {
+        "question": "What is 'vẽ 2 tai và cái đuôi'?",
+        "correct": "draw 2 ears and a tail",
+        "wrong": "draw 2 eyes and a nose"
+      },
+      {
+        "question": "What is 'vẽ 4 chân'?",
+        "correct": "draw 4 legs",
+        "wrong": "draw a head and a body"
+      },
+      {
+        "question": "What is 'vẽ 2 mắt và cái mũi'?",
+        "correct": "draw 2 eyes and a nose",
+        "wrong": "color the picture"
+      },
+      {
+        "question": "What is 'tô màu bức tranh'?",
+        "correct": "color the picture",
+        "wrong": "write f-o-x under the picture"
+      },
+      {
+        "question": "What is 'viết f-o-x dưới bức tranh'?",
+        "correct": "write f-o-x under the picture",
+        "wrong": "draw 4 legs"
+      },
+      {
+        "question": "What is 'bỏ sách vào cặp'?",
+        "correct": "put your books in your bag",
+        "wrong": "put on your jacket"
+      },
+      {
+        "question": "What is 'mặc áo khoác'?",
+        "correct": "put on your jacket",
+        "wrong": "put on your uniform"
+      },
+      {
+        "question": "What is 'chào tạm biệt thầy cô'?",
+        "correct": "say goodbye to your teacher",
+        "wrong": "join your team"
+      },
+      {
+        "question": "What is 'mặc đồng phục'?",
+        "correct": "put on your uniform",
+        "wrong": "put on your jacket"
+      },
+      {
+        "question": "What is 'chạy đến buổi tập bóng chày'?",
+        "correct": "run to baseball practice",
+        "wrong": "join your team"
+      },
+      {
+        "question": "What is 'tham gia đội của bạn'?",
+        "correct": "join your team",
+        "wrong": "pick up the toys"
+      },
+      {
+        "question": "What is 'nhặt đồ chơi lên'?",
+        "correct": "pick up the toys",
+        "wrong": "put away the toys"
+      },
+      {
+        "question": "What is 'cất đồ chơi đi'?",
+        "correct": "put away the toys",
+        "wrong": "sweep the floor"
+      },
+      {
+        "question": "What is 'quét sàn nhà'?",
+        "correct": "sweep the floor",
+        "wrong": "wipe the desks"
+      },
+      {
+        "question": "What is 'lau bàn học'?",
+        "correct": "wipe the desks",
+        "wrong": "erase the board"
+      },
+      {
+        "question": "What is 'lau bảng'?",
+        "correct": "erase the board",
+        "wrong": "turn off the lights"
+      },
+      {
+        "question": "What is 'tắt đèn'?",
+        "correct": "turn off the lights",
+        "wrong": "sweep the floor"
+      }
+    ]
   }
 ]
