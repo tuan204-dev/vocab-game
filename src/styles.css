@@ -871,26 +871,31 @@ body {
   font-size: 1.1rem;
 }
 
-.unit-select-option select {
-  padding: 10px 15px;
+.unit-checkboxes {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px;
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  font-size: 1rem;
-  font-family: var(--font-family);
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.9);
-  transition: all 0.3s ease;
 }
 
-.unit-select-option select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: white;
+.unit-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #2f2f4a;
+  cursor: pointer;
 }
 
-.unit-hint {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.85rem;
-  font-style: italic;
+.unit-checkbox span {
+  color: #2f2f4a;
+}
+
+.unit-checkbox input {
+  width: 18px;
+  height: 18px;
 }
 
 /* ===== Modal ===== */

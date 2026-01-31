@@ -74,7 +74,6 @@ function setupEventListeners() {
   // Welcome screen
   document.getElementById('start-btn').addEventListener('click', handleStartGame);
   document.getElementById('manage-btn').addEventListener('click', handleManageClick);
-  document.getElementById('unit-select').addEventListener('change', handleWelcomeUnitChange);
   
   // Permission screen
   document.getElementById('allow-camera-btn').addEventListener('click', handleAllowCamera);
@@ -105,10 +104,6 @@ function setupEventListeners() {
   document.getElementById('cancel-unit-modal-btn').addEventListener('click', closeUnitModal);
   document.getElementById('confirm-delete-unit-btn').addEventListener('click', confirmDeleteUnit);
   document.getElementById('cancel-delete-unit-btn').addEventListener('click', cancelDeleteUnit);
-  
-  // Authentication modal
-  document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
-  document.getElementById('cancel-auth-btn').addEventListener('click', closeAuthModal);
   
   // Global keyboard shortcuts
   document.addEventListener('keydown', handleKeyPress);
@@ -504,38 +499,8 @@ function cancelReset() {
 
 // Authentication functions
 function handleManageClick() {
-  // Show authentication modal
-  document.getElementById('auth-modal').classList.remove('hidden');
-  document.getElementById('password-input').value = '';
-  document.getElementById('auth-error').classList.add('hidden');
-  // Focus on password input
-  setTimeout(() => {
-    document.getElementById('password-input').focus();
-  }, 100);
-}
-
-function handleAuthSubmit(e) {
-  e.preventDefault();
-  const passwordInput = document.getElementById('password-input');
-  const authError = document.getElementById('auth-error');
-  
-  if (passwordInput.value === config.managerPassword) {
-    // Authentication successful
-    state.isAuthenticated = true;
-    closeAuthModal();
-    showScreen('manager');
-  } else {
-    // Show error
-    authError.classList.remove('hidden');
-    passwordInput.value = '';
-    passwordInput.focus();
-  }
-}
-
-function closeAuthModal() {
-  document.getElementById('auth-modal').classList.add('hidden');
-  document.getElementById('password-input').value = '';
-  document.getElementById('auth-error').classList.add('hidden');
+  state.isAuthenticated = true;
+  showScreen('manager');
 }
 
 function handleManagerBack() {
@@ -546,7 +511,7 @@ function handleManagerBack() {
 // ===== Unit Management =====
 function refreshUnitSelectors() {
   const units = getUnits();
-  const welcomeSelect = document.getElementById('unit-select');
+  const checkboxesContainer = document.getElementById('unit-checkboxes');
   const questionUnitSelect = document.getElementById('question-unit-select');
   const savedUnitIds = JSON.parse(localStorage.getItem('selected-unit-ids') || '[]');
   const savedManagerUnitId = localStorage.getItem('active-unit-id');
@@ -558,12 +523,20 @@ function refreshUnitSelectors() {
     : fallbackUnitId;
 
   const optionsHtml = units.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
-  if (welcomeSelect) welcomeSelect.innerHTML = optionsHtml;
   if (questionUnitSelect) questionUnitSelect.innerHTML = optionsHtml;
 
-  if (welcomeSelect) {
-    Array.from(welcomeSelect.options).forEach(opt => {
-      opt.selected = selectedIds.length > 0 ? selectedIds.includes(opt.value) : opt.value === fallbackUnitId;
+  if (checkboxesContainer) {
+    checkboxesContainer.innerHTML = units.map(u => {
+      const checked = selectedIds.length > 0 ? selectedIds.includes(u.id) : u.id === fallbackUnitId;
+      return `
+        <label class="unit-checkbox">
+          <input type="checkbox" value="${u.id}" ${checked ? 'checked' : ''}>
+          <span>${u.name}</span>
+        </label>
+      `;
+    }).join('');
+    checkboxesContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', handleWelcomeUnitChange);
     });
   }
 
@@ -578,14 +551,20 @@ function refreshUnitSelectors() {
 }
 
 function handleWelcomeUnitChange(e) {
-  const unitIds = Array.from(e.target.selectedOptions).map(opt => opt.value);
+  const checkboxesContainer = document.getElementById('unit-checkboxes');
+  if (!checkboxesContainer) return;
+  const unitIds = Array.from(checkboxesContainer.querySelectorAll('input[type="checkbox"]'))
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
   localStorage.setItem('selected-unit-ids', JSON.stringify(unitIds));
 }
 
 function getSelectedUnitIds() {
-  const select = document.getElementById('unit-select');
-  if (!select) return [];
-  return Array.from(select.selectedOptions).map(opt => opt.value);
+  const checkboxesContainer = document.getElementById('unit-checkboxes');
+  if (!checkboxesContainer) return [];
+  return Array.from(checkboxesContainer.querySelectorAll('input[type="checkbox"]'))
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
 }
 
 function getActiveManagerUnitId() {
